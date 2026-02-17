@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Collaborative Musical Canvas Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Fira+Code:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <script type="module" crossorigin src="./assets/index-Dm5foi-B.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/tone-B-Z_Kd95.js">
+  <link rel="modulepreload" crossorigin href="./assets/p5-BLJo1RsL.js">
+  <link rel="stylesheet" crossorigin href="./assets/index-BP3HGeq0.css">
+</head>
+
+<body>
+
+  <!-- ─── Header ─── -->
+  <header>
+    <div class="header-left">
+      <h1>Collaborative <em>Musical Canvas</em></h1>
+      <p>A collective composition — one note per person per day</p>
+    </div>
+    <div class="header-right">
+      <div class="stat-block">
+        <div class="val" id="hdr-contributors">1</div>
+        <div class="lbl">Contributors</div>
+      </div>
+      <div class="stat-block">
+        <div class="val" id="hdr-notes">0</div>
+        <div class="lbl">Notes Placed</div>
+      </div>
+      <div class="stat-block">
+        <div class="val" id="hdr-days">28</div>
+        <div class="lbl">Days Left</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── Main layout ─── -->
+  <main>
+
+    <!-- Palette Panel -->
+    <div id="palette-panel">
+      <div class="panel-title">Color · Expression</div>
+      <div class="color-swatches" id="color-swatches"></div>
+
+      <div class="note-select-wrap">
+        <label>Pitch Row Override</label>
+        <p class="hint-text">
+          Click any cell on the grid to place a note. Row determines pitch automatically.<br />
+          <span class="hi">↑ high</span> · <span class="dim">↓ low</span>
+        </p>
+      </div>
+
+      <div class="legend-wrap">
+        <div class="panel-title">Legend</div>
+        <div class="legend-lines">
+          <div>Cool tones → <span class="txt">long notes</span></div>
+          <div>Warm tones → <span class="txt">short notes</span></div>
+          <div>Bright → <span class="txt">loud</span></div>
+          <div>Dark → <span class="txt">soft</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Canvas Area -->
+    <div id="canvas-wrap">
+      <div id="canvas-container"></div>
+      <div class="canvas-label">50 × 50 grid · hover to preview pitch · click to place note</div>
+      <div class="fill-bar-wrap">
+        <div class="fill-bar-header">
+          <span>Grid Fill Progress</span>
+          <span class="pct" id="fill-pct">0.00%</span>
+        </div>
+        <div class="fill-bar-track">
+          <div class="fill-bar-fill" id="fill-bar" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Panel -->
+    <div id="stats-panel">
+
+      <div class="stats-section">
+        <div class="section-title">Session</div>
+        <div class="day-token" id="day-token">
+          <div class="token-dot available" id="token-dot"></div>
+          <div class="token-text" id="token-text">
+            Your note is available today.<br />Click any empty cell.
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-section">
+        <div class="section-title">Melody</div>
+        <div class="stats-row">
+          <span class="key">Duration</span>
+          <span class="val hi" id="melody-duration">—</span>
+        </div>
+        <div class="stats-row">
+          <span class="key">Active columns</span>
+          <span class="val" id="active-cols">0 / 50</span>
+        </div>
+        <div class="stats-row">
+          <span class="key">Compressed silences</span>
+          <span class="val" id="compressed-sil">0</span>
+        </div>
+        <div class="stats-row">
+          <span class="key">Tempo</span>
+          <span class="val" id="tempo-val">90 bpm</span>
+        </div>
+      </div>
+
+      <div class="stats-section">
+        <div class="section-title">Phase</div>
+        <div class="phase-indicator">
+          <div class="phase-name" id="phase-name">Sparse · Airy</div>
+          <div class="phase-desc" id="phase-desc">
+            The canvas is nearly empty. Early notes echo in the silence, each one standing alone.
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-section">
+        <div class="section-title">Hover</div>
+        <div id="hover-info">Move over the grid to preview a cell</div>
+      </div>
+
+      <div class="stats-section bottom-stats">
+        <div class="section-title">Experiment</div>
+        <div class="stats-row">
+          <span class="key">Deadline</span>
+          <span class="val" id="deadline-date">—</span>
+        </div>
+        <div class="stats-row">
+          <span class="key">Fill to end</span>
+          <span class="val">2,500 notes</span>
+        </div>
+        <div class="stats-row">
+          <span class="key">Empty cells</span>
+          <span class="val" id="empty-cells">2,500</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ─── Controls bar ─── -->
+  <footer>
+    <button class="btn" id="btn-play">▶ Play</button>
+    <button class="btn" id="btn-stop">■ Stop</button>
+    <button class="btn danger" id="btn-clear">✕ Clear Grid</button>
+
+    <div class="ctrl-group">
+      <span class="ctrl-label">Tempo</span>
+      <input type="range" id="tempo-slider" min="40" max="180" value="90" />
+      <span class="ctrl-label w30" id="tempo-disp">90</span>
+    </div>
+
+    <div class="ctrl-group">
+      <span class="ctrl-label">Volume</span>
+      <input type="range" id="vol-slider" min="-30" max="0" value="-10" />
+    </div>
+
+    <div class="footer-spacer"></div>
+    <div class="playhead-info" id="playhead-info">Column — / 50</div>
+  </footer>
+
+  <div id="toast"></div>
+
+</body>
+
+</html>
