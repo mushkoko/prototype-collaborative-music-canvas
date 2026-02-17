@@ -1,0 +1,28 @@
+{
+  "name": "collaborative-musical-canvas",
+  "version": "0.1.0",
+  "description": "A live collaborative grid where participants place colored notes that generate a shared evolving melody.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "gh-pages:deploy": "npm run build && gh-pages -d dist"
+  },
+  "keywords": [
+    "music",
+    "collaboration",
+    "p5js",
+    "tonejs",
+    "generative"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "gh-pages": "^6.3.0",
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "p5": "^2.2.1",
+    "tone": "^15.1.22"
+  }
+}
