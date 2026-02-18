@@ -62,7 +62,10 @@ export function gridStats(grid) {
   for (let c = 0; c < GRID_COLS; c++) {
     let colHasNote = false;
     for (let r = 0; r < GRID_ROWS; r++) {
-      if (grid[r][c]) { total++; colHasNote = true; }
+      if (grid[r][c]) {
+        total++;
+        colHasNote = true;
+      }
     }
     if (colHasNote) activeCols++;
   }

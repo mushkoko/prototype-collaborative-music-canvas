@@ -195,7 +195,7 @@ main {
 }
 
 .swatch-meta {
-  font-size: 0.52rem;
+  font-size: 0.62rem;
   color: var(--text-dim);
   margin-top: 1px;
 }
@@ -213,7 +213,7 @@ main {
 }
 
 .hint-text {
-  font-size: 0.58rem;
+  font-size: 0.62rem;
   color: var(--text-dim);
   margin-bottom: 10px;
   line-height: 1.5;
@@ -228,7 +228,7 @@ main {
 }
 
 .legend-lines {
-  font-size: 0.58rem;
+  font-size: 0.60rem;
   color: var(--text-dim);
   line-height: 1.9;
 }

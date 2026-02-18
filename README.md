@@ -15,6 +15,7 @@ Participants place a single colored note on a shared 50×50 grid each day. The g
 - **p5.js renderer** — live playhead, hover pitch preview, row pitch guide
 - **1-note-per-day gate** — enforced via localStorage (cookie-based, simple)
 - **Phase arc** — Sparse → Emergent → Dense → Ceremonial
+- **Demo mode** — unlimited note placement for easy experimentation (daily limit removed)
 
 ---
 

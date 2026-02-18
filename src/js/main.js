@@ -5,24 +5,24 @@
  * Tone.js player, and the DOM/UI layer.
  */
 
-import "../css/style.css";
+import '../css/style.css';
 
 import {
   GRID_COLS,
   GRID_ROWS,
   createGrid,
-  hasPlacedToday,
+  // hasPlacedToday,
   markPlacedToday,
-  resetTodayToken,
+  // resetTodayToken,
   seedDemoNotes,
   gridStats,
-} from "./grid.js";
+} from './grid.js';
 
-import { COLORS, getDuration, getVelocity } from "./colors.js";
+import { COLORS, getDuration, getVelocity } from './colors.js';
 
-import { rowToNote } from "./scale.js";
+import { rowToNote } from './scale.js';
 
-import { buildMelodyEvents, estimateDuration } from "./melody.js";
+import { buildMelodyEvents, estimateDuration } from './melody.js';
 
 import {
   startPlayback,
@@ -33,14 +33,14 @@ import {
   isPlaying,
   onPlaybackColChange,
   onPlaybackStop,
-} from "./player.js";
+} from './player.js';
 
 import {
   createSketch,
   setGrid,
   setSelectedColor,
   setOnCellClick,
-} from "./sketch.js";
+} from './sketch.js';
 
 import {
   showToast,
@@ -56,7 +56,7 @@ import {
   updatePlayhead,
   clearPlayhead,
   setPlayBtnState,
-} from "./ui.js";
+} from './ui.js';
 
 // ═══════════════════════════════════════════════════════════
 // EXPERIMENT CONFIG
@@ -73,7 +73,7 @@ let selectedColor = 0;
 let tempo = 90;
 
 // Seed demo notes so the grid isn't empty on first run
-seedDemoNotes(grid, 18, COLORS.length);
+seedDemoNotes(grid, 218, COLORS.length);
 
 // ═══════════════════════════════════════════════════════════
 // INIT
@@ -89,7 +89,7 @@ buildPalette((idx) => {
 setGrid(grid);
 setSelectedColor(selectedColor);
 setOnCellClick(handleCellClick);
-createSketch("canvas-container");
+createSketch('canvas-container');
 
 // Playback callbacks
 onPlaybackColChange((col, note) => {
@@ -101,18 +101,18 @@ onPlaybackStop(() => {
 });
 
 // Footer controls
-document.getElementById("btn-play").addEventListener("click", handlePlayPause);
-document.getElementById("btn-stop").addEventListener("click", handleStop);
-document.getElementById("btn-clear").addEventListener("click", handleClear);
+document.getElementById('btn-play').addEventListener('click', handlePlayPause);
+document.getElementById('btn-stop').addEventListener('click', handleStop);
+document.getElementById('btn-clear').addEventListener('click', handleClear);
 
-document.getElementById("tempo-slider").addEventListener("input", (e) => {
+document.getElementById('tempo-slider').addEventListener('input', (e) => {
   tempo = parseInt(e.target.value);
-  document.getElementById("tempo-disp").textContent = tempo;
+  document.getElementById('tempo-disp').textContent = tempo;
   setTransportBpm(tempo);
   refreshStats();
 });
 
-document.getElementById("vol-slider").addEventListener("input", (e) => {
+document.getElementById('vol-slider').addEventListener('input', (e) => {
   setMasterVolume(parseInt(e.target.value));
 });
 
@@ -131,13 +131,13 @@ refreshStats();
 
 function handleCellClick(row, col) {
   if (grid[row][col]) {
-    showToast("This cell is already occupied.");
+    showToast('This cell is already occupied.');
     return;
   }
-  if (hasPlacedToday()) {
-    showToast("You've already placed your note today. Come back tomorrow!");
-    return;
-  }
+  // if (hasPlacedToday()) {
+  //   showToast("You've already placed your note today. Come back tomorrow!");
+  //   return;
+  // }
 
   grid[row][col] = { colorIdx: selectedColor };
   markPlacedToday();
@@ -157,7 +157,7 @@ async function handlePlayPause() {
   }
   const started = await startPlayback(grid, tempo);
   if (!started) {
-    showToast("Place some notes on the grid first!");
+    showToast('Place some notes on the grid first!');
     return;
   }
   setPlayBtnState(true);
@@ -168,14 +168,14 @@ function handleStop() {
 }
 
 function handleClear() {
-  if (!confirm("Clear the entire grid? This is irreversible.")) return;
+  if (!confirm('Clear the entire grid? This is irreversible.')) return;
   grid = createGrid();
-  resetTodayToken();
+  // resetTodayToken();
   stopPlayback();
-  seedDemoNotes(grid, 18, COLORS.length);
+  seedDemoNotes(grid, 218, COLORS.length);
   setGrid(grid); // give sketch the new reference
   refreshStats();
-  showToast("Grid cleared. Demo notes restored.");
+  showToast('Grid cleared. Demo notes restored.');
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -190,12 +190,12 @@ function refreshStats() {
 
   // Duration string
   const durSec = estimateDuration(events, tempo);
-  let durationStr = "—";
+  let durationStr = '—';
   if (durSec >= 1) {
     const m = Math.floor(durSec / 60);
     const s = Math.floor(durSec % 60)
       .toString()
-      .padStart(2, "0");
+      .padStart(2, '0');
     durationStr = `~${m}:${s}`;
   }
 
@@ -214,5 +214,5 @@ function refreshStats() {
   });
   updateGridStats({ total, gridSize });
   updatePhase(fillRatio);
-  updateDayToken(hasPlacedToday());
+  // updateDayToken(hasPlacedToday());
 }

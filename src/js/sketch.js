@@ -14,7 +14,7 @@ import { COLORS } from './colors.js';
 import { rowToNote } from './scale.js';
 import { currentPlayCol } from './player.js';
 
-export const CELL = 10; // px per cell
+export const CELL = 13; // px per cell
 
 /**
  * Hover state shared between sketch and main.js.
@@ -29,9 +29,15 @@ let _selectedColor = 0;
 let _onCellClick = null;
 
 /** Inject current grid reference (updated reference is re-read each frame). */
-export function setGrid(grid)               { _grid = grid; }
-export function setSelectedColor(idx)       { _selectedColor = idx; }
-export function setOnCellClick(fn)          { _onCellClick = fn; }
+export function setGrid(grid) {
+  _grid = grid;
+}
+export function setSelectedColor(idx) {
+  _selectedColor = idx;
+}
+export function setOnCellClick(fn) {
+  _onCellClick = fn;
+}
 
 // ─── Hover info DOM ────────────────────────────────────────
 function renderHoverInfo(row, col) {
@@ -74,8 +80,10 @@ export function createSketch(containerId) {
       // ── Grid lines ──
       p.stroke(25, 32, 55);
       p.strokeWeight(0.5);
-      for (let c = 0; c <= GRID_COLS; c++) p.line(c * CELL, 0, c * CELL, GRID_ROWS * CELL);
-      for (let r = 0; r <= GRID_ROWS; r++) p.line(0, r * CELL, GRID_COLS * CELL, r * CELL);
+      for (let c = 0; c <= GRID_COLS; c++)
+        p.line(c * CELL, 0, c * CELL, GRID_ROWS * CELL);
+      for (let r = 0; r <= GRID_ROWS; r++)
+        p.line(0, r * CELL, GRID_COLS * CELL, r * CELL);
 
       // ── Column activity underlay ──
       p.noStroke();
@@ -113,8 +121,8 @@ export function createSketch(containerId) {
       if (playCol >= 0) {
         p.stroke(201, 168, 76, 150);
         p.strokeWeight(1.5);
-        p.line(playCol * CELL,          0, playCol * CELL,          GRID_ROWS * CELL);
-        p.line((playCol + 1) * CELL,    0, (playCol + 1) * CELL,    GRID_ROWS * CELL);
+        p.line(playCol * CELL, 0, playCol * CELL, GRID_ROWS * CELL);
+        p.line((playCol + 1) * CELL, 0, (playCol + 1) * CELL, GRID_ROWS * CELL);
       }
 
       // ── Hover ghost ──
@@ -154,7 +162,13 @@ export function createSketch(containerId) {
     };
 
     p.mouseClicked = () => {
-      if (p.mouseX < 0 || p.mouseX > p.width || p.mouseY < 0 || p.mouseY > p.height) return;
+      if (
+        p.mouseX < 0 ||
+        p.mouseX > p.width ||
+        p.mouseY < 0 ||
+        p.mouseY > p.height
+      )
+        return;
       const col = Math.floor(p.mouseX / CELL);
       const row = Math.floor(p.mouseY / CELL);
       if (col < 0 || col >= GRID_COLS || row < 0 || row >= GRID_ROWS) return;

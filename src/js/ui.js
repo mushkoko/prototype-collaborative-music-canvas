@@ -44,11 +44,18 @@ export function updateFillBar(total, max = 2500) {
 
 // ─── Stats panel ───────────────────────────────────────────
 
-export function updateMelodyStats({ activeCols, gridCols, compressed, durationStr, bpm }) {
-  document.getElementById('active-cols').textContent     = `${activeCols} / ${gridCols}`;
+export function updateMelodyStats({
+  activeCols,
+  gridCols,
+  compressed,
+  durationStr,
+  bpm,
+}) {
+  document.getElementById('active-cols').textContent =
+    `${activeCols} / ${gridCols}`;
   document.getElementById('compressed-sil').textContent = compressed;
   document.getElementById('melody-duration').textContent = durationStr ?? '—';
-  document.getElementById('tempo-val').textContent       = `${bpm} bpm`;
+  document.getElementById('tempo-val').textContent = `${bpm} bpm`;
 }
 
 export function updateGridStats({ total, gridSize }) {
@@ -64,12 +71,12 @@ const PHASES = [
     desc: 'The canvas is nearly empty. Early notes echo in the silence, each one standing alone.',
   },
   {
-    threshold: 0.40,
+    threshold: 0.4,
     name: 'Emergent · Rhythmic',
     desc: 'Patterns begin to form. Columns fill, the melody gains a pulse.',
   },
   {
-    threshold: 0.70,
+    threshold: 0.7,
     name: 'Dense · Cohesive',
     desc: 'The grid thickens. Harmony emerges from the collective placement.',
   },
@@ -81,25 +88,37 @@ const PHASES = [
 ];
 
 export function updatePhase(fillRatio) {
-  const phase = PHASES.find(p => fillRatio < p.threshold) ?? PHASES[PHASES.length - 1];
+  const phase =
+    PHASES.find((p) => fillRatio < p.threshold) ?? PHASES[PHASES.length - 1];
   document.getElementById('phase-name').textContent = phase.name;
   document.getElementById('phase-desc').textContent = phase.desc;
 }
 
 // ─── Day token ─────────────────────────────────────────────
+// export function updateDayToken(placed) {
+//   document.getElementById('token-dot').className =
+//     `token-dot ${placed ? 'used' : 'available'}`;
+//   document.getElementById('token-text').innerHTML = placed
+//     ? 'Note placed today.<br>Come back tomorrow to add another.'
+//     : 'Your note is available today.<br>Click any empty cell.';
+// }
 
-export function updateDayToken(placed) {
-  document.getElementById('token-dot').className = `token-dot ${placed ? 'used' : 'available'}`;
-  document.getElementById('token-text').innerHTML = placed
-    ? 'Note placed today.<br>Come back tomorrow to add another.'
-    : 'Your note is available today.<br>Click any empty cell.';
+// Simplified for demo - always shows available state
+export function updateDayToken() {
+  document.getElementById('token-dot').className = 'token-dot available';
+  document.getElementById('token-text').innerHTML =
+    'Click any empty cell to place a note.';
 }
 
 // ─── Experiment deadline ───────────────────────────────────
 
 export function setDeadlineDate(date) {
   document.getElementById('deadline-date').textContent =
-    date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
 }
 
 // ─── Playhead ──────────────────────────────────────────────
@@ -142,7 +161,9 @@ export function buildPalette(onSelect) {
         <div class="swatch-meta">${DUR_LABEL[c.temp]} · ${VEL_LABEL[c.bright]}</div>
       </div>`;
     el.addEventListener('click', () => {
-      document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+      document
+        .querySelectorAll('.swatch')
+        .forEach((s) => s.classList.remove('active'));
       el.classList.add('active');
       onSelect(i);
     });
